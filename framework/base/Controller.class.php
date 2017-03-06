@@ -37,7 +37,7 @@ class Controller extends Object {
      */
     public function redirect($url, $message = '', $wait = 0) {
         $url = $this->parseUrl($url);
-        
+
         if ($wait) {
             header("Refresh:{$wait};url={$url}");
         } else {
@@ -139,6 +139,9 @@ class Controller extends Object {
      */
     public function parseUrl($url, $param = []) {
         $url = trim($url);
+        if ($url == 'home') {
+            return "?c=home&a=index";
+        }
         $arg = '';
         if (!empty($param)) {
             $arg = '&' . http_build_query($param);

@@ -391,13 +391,14 @@ class Model extends Object {
                 }
             }
         } else {
+          
             foreach ($attribute as $key => $val) {
                 if (is_array($val) && !empty($val)) {
 //                    foreach () {
 //                        
 //                    }
                 }
-                if (in_array($val, $this->tableFileds)) {
+                if (in_array($key, $this->tableFileds)) {
                     $this->$key = $val;
                     $this->param[":{$key}"] = $val;
                 }

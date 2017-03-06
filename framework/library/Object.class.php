@@ -40,5 +40,23 @@ class Object {
         $e = new \Exception();
         return $e->getTraceAsString();
     }
+    /**
+     * 字符串加密方法,返回加密后的字符.若加密失败则返回FALSE
+     * @param type $password 待加密的字符串
+     * @return String Or FALSE
+     */
+    public static function generateHashPassword($password) {
+        return password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    /**
+     * 密码校验, 返回TRUE 或FALSE
+     * @param type $stringPassword 明文字符串
+     * @param type $hashPassword 加密后的字符串
+     * @return type Boolean
+     */
+    public static function verifyPassword($stringPassword, $hashPassword) {
+        return password_verify($stringPassword, $hashPassword);
+    }
 
 }

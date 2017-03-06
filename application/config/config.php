@@ -2,7 +2,7 @@
 
 return [
     'db' => [
-        'dsn' => 'mysql:host=localhost;dbname=test;',
+        'dsn' => 'mysql:host=localhost;dbname=blog;',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',

@@ -298,3 +298,15 @@
 [2017-03-03 17:47:07] SELECT  *  FROM `user`     
 [2017-03-03 17:47:08] SELECT  *  FROM `user`     
 [2017-03-03 17:47:08] SELECT  *  FROM `user`     
+[2017-03-06 15:35:19] INSERT INTO `user` (`password` ) VALUES ( :password ) 
+[2017-03-06 15:36:04] INSERT INTO `user` (`password` ) VALUES ( :password ) 
+[2017-03-06 15:36:08] INSERT INTO `user` (`password` ) VALUES ( :password ) 
+[2017-03-06 15:39:19] INSERT INTO `user` (`password` ) VALUES ( :password ) 
+[2017-03-06 15:39:19] SELECT  *  FROM `user`     
+[2017-03-06 15:42:11] INSERT INTO `user` (`password` ,`created` ) VALUES ( :password , :created ) 
+[2017-03-06 15:42:11] SELECT  *  FROM `user`     
+[2017-03-06 15:49:45] INSERT INTO `user` (`username` ,`password` ,`emaill` ,`mobile` ,`created` ) VALUES ( :username , :password , :emaill , :mobile , :created ) 
+[2017-03-06 15:49:45] SELECT  *  FROM `user`     
+[2017-03-06 15:54:50] SELECT  *  FROM `user` WHERE `id` = :id      
+[2017-03-06 15:55:05] SELECT  *  FROM `user` WHERE `id` = :id      
+[2017-03-06 15:55:27] SELECT  *  FROM `user` WHERE `id` = :id      

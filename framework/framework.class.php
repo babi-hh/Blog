@@ -25,7 +25,7 @@ class Framework {
         echo $errorHtml;
     }
 
-    // PHP会在退出之前做最后一次挣扎
+    // PHP会在退出之前进来溜达一圈
     final static function shutdown() {
        
         $error = error_get_last();
@@ -57,6 +57,7 @@ class Framework {
         
         // 脚本开始执行的精确时间
         define('SCRIPT_START_TIME', microtime(true));
+        define('REQUEST_TIME', $_SERVER['REQUEST_TIME']);
         // 资源文件(css js...)的相对路径
         define('ASSETS_PATH', stristr(parse_url($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'], '/'));
         // 定义目录分隔符,[windows=>\,linux=>/]
@@ -85,7 +86,8 @@ class Framework {
 //        define('PLATFORM', isset($_REQUEST['p']) ? $_REQUEST['p'] : 'home');// 前后台分离
         define('CONTROLLER', isset($_REQUEST['c']) && $_REQUEST['c'] ? ucfirst($_REQUEST['c']) : 'Home');
         define('ACTION', isset($_REQUEST['a']) && $_REQUEST['a'] ? ucfirst($_REQUEST['a']) : 'Index');
-
+        
+        define('IS_POST', isset($_POST['submit']) ? TRUE : FALSE);
         // 加载核心类文件
         require LIBRARY_PATH . 'Object.class.php';
         require BASE_PATH . 'Controller.class.php';
@@ -107,6 +109,7 @@ class Framework {
 
     /**
      * 注册的自动加载方法,当实例一个没有加载的类时,会隐式调用此方法.
+     * PHP解析引擎会在抛出异常之前,再做最后一次争扎ﾟｰﾟ.
      * @param type $className Description
      */
     public static function load($className) {
