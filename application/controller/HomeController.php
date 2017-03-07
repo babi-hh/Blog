@@ -4,6 +4,7 @@ namespace app\controller;
 use framework\base\Controller;
 use app\model\User;
 use framework\library\Flash;
+use framework\base\ErrorException;
 
 class HomeController extends Controller {
     
@@ -14,6 +15,7 @@ class HomeController extends Controller {
         $model = $this->findOne(7);
         $model->mobile = 13591791280;
         $model->save();
+        3 / 0;
         $this->render('index', ['ac' => $model]);
     }
 
@@ -43,7 +45,7 @@ class HomeController extends Controller {
 
     public function findOne($id) {
         if (empty($id)) {
-            throw new Exception("$id 不能为空");
+            throw new ErrorException("id 不能为空", E_USER_ERROR);
         }
         return (new User)->fetch($id);
     }

@@ -3,7 +3,8 @@ namespace framework\database;
 use \PDO;
 
 class DB {
-
+    
+    // PDO的资源标识符
     protected static $db = FALSE;
     protected $sql;
     const FETCH_ASSOC = PDO::FETCH_ASSOC;

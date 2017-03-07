@@ -5,4 +5,4 @@ function D($varVal, $isExit = FALSE) {
 }
 
 include getcwd() . '/../framework/framework.class.php';
-(new framework\Framework())->run();
+framework\Framework::run();

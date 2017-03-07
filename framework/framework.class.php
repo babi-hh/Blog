@@ -5,25 +5,10 @@
 
 namespace framework;
 
-use \Exception;
+use framework\base\ErrorException;
+use framework\base\ErrorHandler;
 
 class Framework {
-    public function __construct() {
-        register_shutdown_function([__CLASS__, 'shutdown']);
-        // 自定义错误处理方法
-//        set_error_handler([__CLASS__, 'myErrorHandler']);
-    }
-    
-    // 自定义错误处理方法
-    public static function myErrorHandler() {
-        $errors = debug_backtrace();
-        $errorHtml = '错误!<br/>';
-        foreach ($errors as $key => $item) {
-            $file = str_replace(getcwd(), ' ', $item['file']);
-            $errorHtml .= "#{$key} In file {$item['file']} : {$item['line']} line, function : {$item['function']} in the class {$item['class']} <br/>";
-        }
-        echo $errorHtml;
-    }
 
     // PHP会在退出之前进来溜达一圈
     final static function shutdown() {
@@ -45,6 +30,7 @@ class Framework {
     public static function run() {
         self::init();
         self::autoload();
+        self::setHandler();
         self::dispatch();
     }
 
@@ -87,7 +73,7 @@ class Framework {
         define('CONTROLLER', isset($_REQUEST['c']) && $_REQUEST['c'] ? ucfirst($_REQUEST['c']) : 'Home');
         define('ACTION', isset($_REQUEST['a']) && $_REQUEST['a'] ? ucfirst($_REQUEST['a']) : 'Index');
         
-        define('IS_POST', isset($_POST['submit']) ? TRUE : FALSE);
+        define('IS_POST', isset($_POST['submit']) || !empty($_POST) ? TRUE : FALSE);
         // 加载核心类文件
         require LIBRARY_PATH . 'Object.class.php';
         require BASE_PATH . 'Controller.class.php';
@@ -105,6 +91,19 @@ class Framework {
      */
     public static function autoload() {
         spl_autoload_register([__CLASS__, 'load']);
+    }
+
+    /**
+     * 自定义处理程序
+     */
+    public static function setHandler() {
+        register_shutdown_function([__CLASS__, 'shutdown']);
+//        error_reporting(0);
+        ini_set('display_errors', 'Off'); // 不显示错误,有set_exception_handler()来输出错误
+        // 自定义捕获异常处理
+        set_exception_handler(['framework\base\ErrorException', 'ExceptionHandler']);
+        // 自定义错误处理方法
+        set_error_handler(['framework\base\ErrorException', 'ErrorHandler']);
     }
 
     /**
@@ -171,8 +170,4 @@ class Framework {
 
         return $className;
     }
-
-//    public function __destruct() {
-//        debug_print_backtrace();
-//    }
 }
