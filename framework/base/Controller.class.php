@@ -3,7 +3,9 @@ namespace framework\base;
 
 use framework\library\Object;
 use framework\library\Flash;
-
+/**
+ * 控制器的基类
+ */
 class Controller extends Object {
 
     // 网站标题
@@ -168,7 +170,7 @@ class Controller extends Object {
      */
     public function checkFileExists($filename) {
         if (!file_exists($filename)) {
-            throw new \Exception("文件：{$filename} 不存在!", '500');
+            throw new \framework\exception\NotFoundException("文件：{$filename} 不存在!");
         }
     }
     

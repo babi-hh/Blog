@@ -1,27 +1,23 @@
 <?php
-/**
- * @author Seldoon <Sedloon@sina.cn>
- */
 
 namespace framework;
 
 use framework\base\ErrorException;
 use framework\base\ErrorHandler;
 
+/**
+ * 主进程类
+ * @author Seldoon <Sedloon@sina.cn>
+ * @todo 定义一个开发者模式,如define('APP_DEBUG',Ture);开发阶段方便调试
+ */
 class Framework {
 
     // PHP会在退出之前进来溜达一圈
     final static function shutdown() {
-       
-        $error = error_get_last();
-        if ($error) {
-            die;
-            echo $error;
-            debug_print_backtrace();
-        }
-        // 写一个代码捕获的方法，打印调用的堆栈信息
+
+        // 输出脚本运行的时间
         $time = (microtime(1) - SCRIPT_START_TIME) * 1000;
-        print ($time . ' ms');
+        print ('<br />' . $time . ' ms');
     }
 
     /**
@@ -29,6 +25,7 @@ class Framework {
      */
     public static function run() {
         self::init();
+        self::debug();
         self::autoload();
         self::setHandler();
         self::dispatch();
@@ -59,7 +56,6 @@ class Framework {
         define('CONTROLLER_PATH', APP_PATH . 'controller' . DS);
         define('MODEL_PATH', APP_PATH . 'model' . DS);
         define('VIEW_PATH', APP_PATH . 'view' . DS);
-
         
         // 框架核心目录的定义
         define('LIBRARY_PATH', FRAMEWORK_PATH . 'library' . DS);
@@ -67,23 +63,41 @@ class Framework {
         define('DB_PATH', FRAMEWORK_PATH . 'database' . DS);
         define('UPLOAD_PATH', WEB_PATH . 'uploads' . DS);
 
-
         // 定义默认控制器及操作
 //        define('PLATFORM', isset($_REQUEST['p']) ? $_REQUEST['p'] : 'home');// 前后台分离
         define('CONTROLLER', isset($_REQUEST['c']) && $_REQUEST['c'] ? ucfirst($_REQUEST['c']) : 'Home');
         define('ACTION', isset($_REQUEST['a']) && $_REQUEST['a'] ? ucfirst($_REQUEST['a']) : 'Index');
         
+        // 管理员
+//        define('IS_ADMIN', isset($_SESSION['']));
+        // 匿名用户
+//        define('IS_GUEST', !isset($_SESSION['']));
         define('IS_POST', isset($_POST['submit']) || !empty($_POST) ? TRUE : FALSE);
+        // 错误图标
+        define('ERROR_INCO', '<h1>￣へ￣</h1>');
+        define('BR', '<br />');
+
         // 加载核心类文件
         require LIBRARY_PATH . 'Object.class.php';
         require BASE_PATH . 'Controller.class.php';
         require BASE_PATH . 'Model.class.php';
         require DB_PATH . 'DB.class.php';
+
         // 加载配置文件
         $GLOBALS['config'] = include CONFIG_PATH . 'config.php';
 
         // Session 
         session_start();
+    }
+    
+    /**
+     * 调试模式的配置
+     */
+    public static function debug() {
+        if (defined('APP_DEBUG') && APP_DEBUG) {
+            // 不显示错误,有set_error_handler()来输出错误,一般是致命错误php不会交给自定义方法,而是自己处理
+            ini_set('display_errors', 'Off');
+        }
     }
 
     /**
@@ -98,12 +112,10 @@ class Framework {
      */
     public static function setHandler() {
         register_shutdown_function([__CLASS__, 'shutdown']);
-//        error_reporting(0);
-        ini_set('display_errors', 'Off'); // 不显示错误,有set_exception_handler()来输出错误
         // 自定义捕获异常处理
         set_exception_handler(['framework\base\ErrorException', 'ExceptionHandler']);
         // 自定义错误处理方法
-        set_error_handler(['framework\base\ErrorException', 'ErrorHandler']);
+        set_error_handler(['framework\base\ErrorHandler', 'ErrorHandler']);
     }
 
     /**
