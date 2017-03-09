@@ -8,7 +8,9 @@ namespace framework\base;
 
 use framework\library\Object;
 use framework\database\DB;
-
+/**
+ * 数据抽象层
+ */
 class Model extends Object {
 
     // 数据库句柄
@@ -38,12 +40,7 @@ class Model extends Object {
 
     public function __construct($tableName = NULL) {
         $tableName = $tableName ? : strtolower($this->getClass($this));
-        // 链接数据库
-        $this->db = DB::getDB();
         $this->tableName = $tableName;
-
-//        $this->setTableFileds();
-
         parent::__construct();
     }
 
@@ -268,6 +265,7 @@ class Model extends Object {
      */
     public function query($sql = NULL, $param = []) {
         $this->setTableFileds();
+
         // 执行query() sql语句
         if ($sql) {
             $this->sql = $sql;
@@ -418,10 +416,14 @@ class Model extends Object {
      * 设置对象的字段属性，对数据表的字段映射到模型上
      */
     public function setTableFileds() {
+        // 获得pdo句柄
+        $this->getDB();
         // 若该对象已存在表字段的映射,则返回
         if ($this->tableFileds !== NULL) {
             return;
         }
+        
+
         // 获取字段名称
         $results = $this->db->query("DESC {$this->tableName}");
         $this->tableFileds = [];
@@ -447,6 +449,15 @@ class Model extends Object {
             // 由于stmt的bindParam 的参数是引用传值,所以在使用后要unset掉,否则会导致绑定的参数的值都为最后一次循环的数据
             unset($key, $val);
         }
+    }
+
+    /**
+     * 获得PDO资源标识符(句柄)
+     * @return PDO resource
+     */
+    public function getDB() {
+        // 链接数据库
+        $this->db || $this->db = DB::getDB();
     }
 
 }
