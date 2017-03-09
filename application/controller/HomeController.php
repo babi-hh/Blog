@@ -7,7 +7,7 @@ use framework\library\Flash;
 use framework\base\ErrorException;
 
 class HomeController extends Controller {
-    
+
     /**
      * 首页
      */

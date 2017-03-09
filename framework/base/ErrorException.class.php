@@ -7,6 +7,7 @@
  * @todo 把错误类和异常类分开
  */   
 namespace framework\base;
+use framework\base\ErrorHandler;
 
 /**
  * @param type $status  错误状态代码 如 404
@@ -48,19 +49,15 @@ class ErrorException extends \Exception {
      * 自定义捕获异常的方法,并渲染相应的模版
      */
     public static function ExceptionHandler($exception) {
-        if (self::$statusCode !== NULL) {
+        $e['message'] = self::$statusCode . ' ' . $exception->getMessage();
+        $e['file'] = $exception->getFile();
+        $e['line'] = $exception->getLine();
+        ob_start();
+        debug_print_backtrace();
+        $e['trace'] = strip_tags(ob_get_clean());
 
-            switch (self::$statusCode) {
-                case self::NOT_FOUND :
-                    self::$template = FRAMEWORK_PATH . 'exception/NotFound.php';
-                    break;
-                case self::ERROR:
-                    self::$template = FRAMEWORK_PATH . 'exception/Error.php';
-                default:
-                    break;
-            }
-            require self::$template;
-        }
+        // 调用处理错误方法去渲染错误信息
+        ErrorHandler::error($e);
         return false;
     }
 

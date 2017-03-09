@@ -19,7 +19,7 @@
                     <A style="color: rgb(204, 204, 204);"href="#">忘记密码?</A>
                 </SPAN> 
                 <SPAN style="float: right;">
-                    <A style="color: rgb(204, 204, 204); margin-right: 10px;" href="#">注册</A>  
+                    <A style="color: rgb(204, 204, 204); margin-right: 10px;" href="<?= $this->url('register') ?>">注册</A>  
                     <input class=''style="background: rgb(0, 142, 173); padding: 7px 10px; border-radius: 4px; border: 1px solid rgb(26, 117, 152); border-image: none; color: rgb(255, 255, 255); font-weight: bold;cursor: pointer" type="submit" name="submit" value="提交">
                 </SPAN> 
             </P>

@@ -73,8 +73,6 @@ class Framework {
         // 匿名用户
 //        define('IS_GUEST', !isset($_SESSION['']));
         define('IS_POST', isset($_POST['submit']) || !empty($_POST) ? TRUE : FALSE);
-        // 错误图标
-        define('ERROR_INCO', '<h1>￣へ￣</h1>');
         define('BR', '<br />');
 
         // 加载核心类文件
@@ -138,7 +136,7 @@ class Framework {
         $controller = new $controllerName;
 
         if ($controller->beforeAction() === FALSE) {
-            throw new Exception(CONTROLLER . "Controller error in beforAction :" . CONTROLLER . "Controller->{$actionName}()", 500);
+            throw new \ErrorException(CONTROLLER . "Controller error in beforAction :" . CONTROLLER . "Controller->{$actionName}()", 500);
         }
         $controller->$actionName();
         $controller->afterAction();

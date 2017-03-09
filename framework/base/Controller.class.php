@@ -57,6 +57,9 @@ class Controller extends Object {
      * @param type $data 传递过来的数据
      */
     public function render($tpl, $data = []) {
+        if ($this->afterAction() === false) {
+            throw new ErrorException('afterAction 发生错误');
+        }
         if (strpos($tpl, '/') === 0) {
             $template = ltrim($tpl, '/');
         } else {
