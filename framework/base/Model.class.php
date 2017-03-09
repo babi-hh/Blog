@@ -9,6 +9,7 @@ namespace framework\base;
 use framework\library\Object;
 use framework\database\DB;
 use framework\base\ErrorException;
+use framework\log\Log;
 
 /**
  * 数据抽象层
@@ -62,6 +63,15 @@ class Model extends Object {
         } else {
             return FALSE;
         }
+    }
+
+    /**
+     * 获得PDO资源标识符(句柄)
+     * @return PDO resource
+     */
+    public function getDB() {
+        // 链接数据库
+        $this->db || $this->db = DB::getDB();
     }
 
     /**
@@ -295,8 +305,7 @@ class Model extends Object {
             }
         }
         // Write log
-        DB::log($this->sql);
-
+        Log::save($this->sql);
         $stmt->execute();
         return $stmt;
     }
@@ -339,7 +348,7 @@ class Model extends Object {
             exit($exc->getTraceAsString());
         }
 
-        DB::log($this->sql);
+        Log::save($this->sql);
         return $result;
     }
     
@@ -449,14 +458,4 @@ class Model extends Object {
             unset($key, $val);
         }
     }
-
-    /**
-     * 获得PDO资源标识符(句柄)
-     * @return PDO resource
-     */
-    public function getDB() {
-        // 链接数据库
-        $this->db || $this->db = DB::getDB();
-    }
-
 }

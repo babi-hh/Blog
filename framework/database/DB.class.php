@@ -1,5 +1,7 @@
 <?php
 namespace framework\database;
+
+use framework\log\Log;
 use \PDO;
 
 class DB {
@@ -39,7 +41,8 @@ class DB {
      */
     public static function log($sql) {
         $sql = "[" . date('Y-m-d H:i:s') . "] {$sql} " . PHP_EOL;
-        file_put_contents(DB_PATH . 'PDO.log', $sql, FILE_APPEND);
+        Log::save($sql);
+//        file_put_contents(DB_PATH . 'PDO.log', $sql, FILE_APPEND);
     }
     public static function lastInsertId() {
         return PDO::lastInsertId();

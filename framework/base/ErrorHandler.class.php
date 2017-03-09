@@ -2,11 +2,13 @@
 
 /**
  * 此类用作错误显示的处理程序
+ * @todo 增加日志记录
  * @author Seldoon <Sedloon@sina.cn>
  * Created: Mar 7, 2017 4:05:40 PM
  */
 
 namespace framework\base;
+use framework\log\Log;
 
 class ErrorHandler {
 
@@ -45,6 +47,7 @@ class ErrorHandler {
     }
 
     /**
+     * @param mix $error 当在抛出一个异常的的时候会调用此方法先处理错误信息
      * 错误提示显示方法
      */
     public static function error($error = NULL) {
@@ -70,6 +73,7 @@ class ErrorHandler {
             $e['line'] = self::$_line;
             $e['trace'] = self::$_trace;
         }
+        Log::save($e['message']);
         // 去除调用堆栈里的路径信息
         $root_path = stristr(getcwd(), '\web', TRUE);
         $e['trace'] = str_replace($root_path, '..', $e['trace']);

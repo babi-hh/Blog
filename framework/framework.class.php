@@ -41,6 +41,7 @@ class Framework {
         // 脚本开始执行的精确时间
         define('SCRIPT_START_TIME', microtime(true));
         define('REQUEST_TIME', $_SERVER['REQUEST_TIME']);
+        defined('APP_DEBUG') || define('APP_DEBUG', FALSE);
         // 资源文件(css js...)的相对路径
         define('ASSETS_PATH', stristr(parse_url($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'])['path'], '/'));
         // 定义目录分隔符,[windows=>\,linux=>/]
@@ -80,6 +81,7 @@ class Framework {
         require BASE_PATH . 'Controller.class.php';
         require BASE_PATH . 'Model.class.php';
         require DB_PATH . 'DB.class.php';
+        require FRAMEWORK_PATH . 'log/Log.class.php';
 
         // 加载配置文件
         $GLOBALS['config'] = include CONFIG_PATH . 'config.php';
