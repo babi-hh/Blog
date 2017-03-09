@@ -8,6 +8,8 @@ namespace framework\base;
 
 use framework\library\Object;
 use framework\database\DB;
+use framework\base\ErrorException;
+
 /**
  * 数据抽象层
  */
@@ -18,7 +20,7 @@ class Model extends Object {
     // 数据库表名称
     protected $tableName;
     // 表子段
-    protected $tableFileds = NULL;
+    protected $tableFileds;
     // 在保存的时候判断是插入还是更新,默认为FALSE 表示插入新的数据
     protected $isNew = FALSE;
     // 查询的字段,默认为所有
@@ -26,7 +28,7 @@ class Model extends Object {
     // 执行的SQL语句
     protected $sql;
     
-    protected $where = NULL;
+    protected $where;
     protected $orderBy;
     protected $groupBy;
     protected $limit;
@@ -192,10 +194,7 @@ class Model extends Object {
 //        }
         $like = trim($like);
         if (empty($like)) {
-            //
-            $error_msg = 'LIKE 不能为空!';
-            $error_type = 'error!';
-            trigger_error($message, $error_type);
+             throw new ErrorException('LIKE 不能为空!', 500);
         }
         // 字符前或者后都不含有%
         if (($like{0} != '%') && ($like{strlen($like) - 1} != '%')) {
