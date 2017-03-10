@@ -62,13 +62,13 @@
             <!-- Begin Wrapper -->
             <div id="wrapper">
                 <!--Flash start-->
-                <?php
-                if ($flash) {
-                    foreach ($flash as $key => $item) {
-                        
-                    }
-                    ?>
-                <?php } ?>
+                <?php if ($flash) : ?>
+                        <div id="flashes">
+                        <?php foreach ($flash as $key => $item) : ?>
+                                    <p class='<?= $key ?>'><?= $item ?></p>
+                        <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
                 <!--Flash end-->
                 <div class="intro">Phasellus vitae lectus sit amet ipsum fringilla viverra at et leo. Cras iaculis, sem vel venenatis sodales, elit dui elementum lorem, ut semper ligula ipsum at sapien.</div>
 
@@ -149,5 +149,6 @@
         <script type="text/javascript" src="<?= ASSETS_PATH ?>style/js/superfish.js"></script>
         <!--<script type="text/javascript" src="<?//= ASSETS_PATH ?>style/js/jquery.prettyPhoto.js"></script>-->
         <script type="text/javascript" src="<?= ASSETS_PATH ?>style/js/scripts.js"></script>
+        <script type="text/javascript" src="<?= ASSETS_PATH ?>js/script.js"></script>
     </body>
 </html>

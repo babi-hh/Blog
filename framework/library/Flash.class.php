@@ -1,5 +1,6 @@
 <?php
 namespace framework\library;
+use framework\base\ErrorException;
 
 /**
  * Flash 消息类,通常用作表单提交之后的信息提示
@@ -22,11 +23,11 @@ final class Flash {
      */
     public static function setFlash($status, $message) {
         if (empty(trim($message))) {
-            throw new \Exception('无法设置一个空的消息.');
+            throw new ErrorException('无法设置一个空的消息.');
         }
         self::initFlashes();
         // 因为在初始化的时候self::$flashes 引用的是$_SESSION[self::FLASHES_KEY],相当于$_SESSION[self::FLASHES_KEY][] = $message
-        self::$flashes[$status][] = $message;
+        self::$flashes[$status] = $message;
     }
     
     /**
@@ -36,7 +37,7 @@ final class Flash {
      */
     public static function getFlash($status = '') {
         self::initFlashes();
-        if (!empty($status)) {
+        if (empty($status)) {
             $copy = self::$flashes;
         } else {
             $copy = isset(self::$flashes[$status]) ? self::$flashes[$status] : '';

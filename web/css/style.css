@@ -1483,3 +1483,24 @@ ol.commentlist li {
 	clear: both;
 	visibility: hidden;
 }
+
+
+/** SetFlash Start **/
+#flashes p{
+    margin: 0 30px;
+    height: 45px;
+    border-radius: 10px;
+    font-size: 25px;
+    text-align: center;
+    line-height: 45px;
+    
+}
+#flashes p.success{
+    background: lightgreen;
+    color: lightslategrey;
+}
+#flashes p.error{
+    background: red;
+    color: floralwhite;
+}
+/** SetFlash end **/
