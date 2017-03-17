@@ -239,7 +239,7 @@ class Model extends Object {
      */
     public function orderBy($orderBy) {
         if (is_string($orderBy)) {
-            $this->orderBy = " ORDER BY {$orderBy} ASC ";
+            $this->orderBy = " ORDER BY {$orderBy} ";
         } else if (is_array($orderBy) && !empty($orderBy)) {
             $this->orderBy = ' ORDER BY ';
             foreach ($orderBy as $key => $val) {
@@ -377,6 +377,7 @@ class Model extends Object {
             $result = $stmt->execute();
         } catch (\PDOException $exc) {
             exit($exc->getTraceAsString());
+//            throw new ErrorException($exc->getTraceAsString());
         }
 
         return $result;
@@ -448,14 +449,11 @@ class Model extends Object {
         foreach ($this->param as $key => $val) {
             if (is_array($val)) {
                 foreach ($val as $k => $v) {
-                    $stmt->bindParam($k, $v);
-                    unset($k, $v);
+                    $stmt->bindValue($k, $v);
                 }
             } else {
-                $stmt->bindParam($key, $val);
+                $stmt->bindValue($key, $val);
             }
-            // 由于stmt的bindParam 的参数是引用传值,所以在使用后要unset掉,否则会导致绑定的参数的值都为最后一次循环的数据
-            unset($key, $val);
         }
     }
 }

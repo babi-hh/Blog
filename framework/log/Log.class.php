@@ -42,7 +42,7 @@ class Log {
                 $message .= "$key => {$val}" . PHP_EOL;
             }
         }
-        error_log($message, $message_type, $destination, $extra_headers);
+        error_log($message . PHP_EOL, $message_type, $destination, $extra_headers);
     }
 
 }
