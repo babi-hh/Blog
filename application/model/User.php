@@ -24,7 +24,7 @@ class User extends Model {
         }
         $this->password = self::generateHashPassword($this->password);
         $this->created = REQUEST_TIME;
-        $this->status = STATUS_ACTIVE;
+        $this->status = self::STATUS_ACTIVE;
         if ($this->save()) {
             $_SESSION['uid'] = $this->id;
             return TRUE;

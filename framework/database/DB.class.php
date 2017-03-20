@@ -29,21 +29,14 @@ class DB {
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->query("SET NAMES {$config['charset']}");
         } catch (\PDOException $exc) {
-            exit("数据库链接错误,错误信息：{$exc->getMessage()}");
+            $error_msg = "数据库链接错误,错误信息：{$exc->getMessage()}";
+            Log::save("PDO Exception:{$error_msg}");
+            APP_DEBUG && exit($error_msg);
         }
         self::$db = $pdo;
         return self::$db;
     }
 
-    /**
-     * 执行的 sql 语句日志
-     * @param type $sql
-     */
-    public static function log($sql) {
-        $sql = "[" . date('Y-m-d H:i:s') . "] {$sql} " . PHP_EOL;
-        Log::save($sql);
-//        file_put_contents(DB_PATH . 'PDO.log', $sql, FILE_APPEND);
-    }
     public static function lastInsertId() {
         return PDO::lastInsertId();
     }

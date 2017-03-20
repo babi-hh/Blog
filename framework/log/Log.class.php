@@ -11,7 +11,7 @@ namespace framework\log;
 class Log {
 
     public static $messageType = 3;
-    public static $destination = '/error.log';
+    public static $destination = 'log/error.log';
     public static $message;
 
     public function __construct() {
@@ -21,10 +21,8 @@ class Log {
      * 写入日志
      */
     public static function save($message, $message_type = NULL, $destination = NULL, $extra_headers = '') {
-        $log_dir = FRAMEWORK_PATH . 'log/log/' . date('Ymd');
-        !is_dir($log_dir) && mkdir($log_dir, 0777, true);
         is_null($message_type) && $message_type = self::$messageType;
-        is_null($destination) && $destination = $log_dir . self::$destination;
+        is_null($destination) && $destination = FRAMEWORK_PATH . self::$destination;
         /**
          * error_log() 函数的用法
          * @param String $message 消息的内容
